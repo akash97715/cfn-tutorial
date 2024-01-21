@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation Template to create a secured S3 Bucket with a policy allowing all actions'
+
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: dev-akash-bucket
+      VersioningConfiguration:
+        Status: Enabled
+      LoggingConfiguration:
+        DestinationBucketName: !Ref MyLoggingS3Bucket
+        LogFilePrefix: 'logs/'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  MyS3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref MyS3Bucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:*'
+            Effect: Allow
+            Resource: 
+              - !Sub 'arn:aws:s3:::${MyS3Bucket}'
+              - !Sub 'arn:aws:s3:::${MyS3Bucket}/*'
+            Principal: '*'
+
+  MyLoggingS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: my-logging-bucket-12345
+      AccessControl: LogDeliveryWrite
+
+Outputs:
+  BucketName:
+    Description: 'Name of the S3 bucket'
+    Value: !Ref MyS3Bucket
+  LoggingBucketName:
+    Description: 'Name of the logging S3 bucket'
+    Value: !Ref MyLoggingS3Bucket
