@@ -24,5 +24,5 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file deploys3.yaml \
-            --stack-name my-stack-name \
+            --stack-name akashstack \
             --capabilities CAPABILITY_IAM
