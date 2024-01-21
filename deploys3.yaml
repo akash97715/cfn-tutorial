@@ -1,19 +1,20 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'CloudFormation Template to create a secured S3 Bucket with a policy allowing all actions'
 
-MyS3Bucket:
-  Type: 'AWS::S3::Bucket'
-  Properties:
-    BucketName: dev-akash-bucket
-    VersioningConfiguration:
-      Status: Enabled
-    LoggingConfiguration:
-      DestinationBucketName: !Ref MyLoggingS3Bucket
-      LogFilePrefix: 'logs/'
-    BucketEncryption:
-      ServerSideEncryptionConfiguration:
-        - ServerSideEncryptionByDefault:
-            SSEAlgorithm: AES256
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: dev-akash-bucket
+      VersioningConfiguration:
+        Status: Enabled
+      LoggingConfiguration:
+        DestinationBucketName: !Ref MyLoggingS3Bucket
+        LogFilePrefix: 'logs/'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
 
   MyS3BucketPolicy:
